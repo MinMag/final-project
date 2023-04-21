@@ -18,8 +18,8 @@
 
 #define BUFSIZE 1024
 #define NUMSAMPLES 30
-#define MOISTURETHRESHOLD 558 //ADC1, I think this is for a threshold of 1.8V on 0-3.3 scale
-#define WATERLEVELTHRESHOLD 350 //ADC2
+#define MOISTURETHRESHOLD (1.8/3.3)*1023 //ADC1, I think this is for a threshold of 1.8V on 0-3.3 scale
+#define WATERLEVELTHRESHOLD (1.65/3.3)*1023 //ADC2
 
 unsigned int adc_buffer1[BUFSIZE];
 unsigned int adc_buffer2[BUFSIZE];
@@ -40,6 +40,7 @@ void pic24_setup(void){
 	AD1PCFGbits.PCFG0 = 0; // set AN0 to analog
 	AD1PCFGbits.PCFG1 = 0; // set AN1 to analog
 	TRISBbits.TRISB12 = 0;   // Set RB12 as output
+    TRISBbits.TRISB6 = 0; // Set RB6 as an output
 	TRISAbits.TRISA0 = 1;  // Set RA0/AN0 to Input
 	TRISAbits.TRISA1 = 1; // Set RA1/AN1 to Input
 }
@@ -108,14 +109,12 @@ void initPushButton(void) {
 	IEC0bits.IC1IE = 1; // Input capture 1 Interrupt Enable
 }
 void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void){
-	// Call putVal() on ADC1BUF0
-	putVal(ADC1BUF0, adc_buffer1, buffer_index1);
-	// Reset the ADC interrupt flag
-	IFS0bits.AD1IF = 0;
+	putVal(ADC1BUF0, adc_buffer1, buffer_index1); // Call putVal() on adc_buffer1 with ADC1BUF0
+	IFS0bits.AD1IF = 0; // Reset the ADC interrupt flag
 }
 void __attribute__((interrupt, auto_psv)) _ADC2Interrupt(void){
-    putVal(ADC1BUF1, adc_buffer2, buffer_index2);
-    IFS0bits.AD1IF = 0;
+    putVal(ADC1BUF1, adc_buffer2, buffer_index2); // Call putVal() on adc_buffer2 with ADC1BUF1
+    IFS0bits.AD1IF = 0; // Reset the ADC interrupt flag
 }
 void __attribute__((interrupt, auto_psv)) _T2Interrupt() { // rollover for T2 ISR
 	_T2IF = 0;
@@ -131,12 +130,20 @@ void pumpEnable(){
     	LATBbits.LATB12 = 0;	// Set RB2 low
     	state = 0;
 }
+void buzzerEnable(){
+    LATBbits.LATB6 = 1; //sets RB6 as high
+    delay_ms(2000);
+    LATBbits = 0; // sets RB6 as low
+    
+}
 
 void loop() {
 	while (1) {
     	while (IFS0bits.T1IF == 0);
         IFS0bits.T1IF = 0;
     	if(getAvg(adc_buffer2, buffer_index2) < WATERLEVELTHRESHOLD){
+            buzzerEnable();
+            
         	//Buzzer
         	//Buzz more
     	}
