@@ -191,11 +191,17 @@ int main() {
 	T2CONbits.TON = 1;
     
     LATBbits.LATB12=1;
-    delay_ms(1000);
-    LATBbits.LATB12=0;
     LATBbits.LATB6 = 1;
-    delay_ms(1000);
+    delay_ms(200);
+    LATBbits.LATB12=0;
     LATBbits.LATB6 = 0;
+    delay_ms(200);
+    LATBbits.LATB12=1;
+    LATBbits.LATB6 = 1;
+    delay_ms(200);
+    LATBbits.LATB12=0;
+    LATBbits.LATB6 = 0;
+    
     
 	loop();
     
