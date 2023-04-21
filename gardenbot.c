@@ -94,8 +94,8 @@ void adc_init1(){
 	TMR3 = 0;  // Set up timer3
 	T3CON = 0;
 	T3CONbits.TCKPS = 0b10;// 1:64
-	PR3 = 15624;
-	T3CONbits.TON = 1; // 16 times per second
+	PR3 = 15624/2;
+	T3CONbits.TON = 1; // 32 times per second
 }
 void initPushButton(void) {
 	__builtin_write_OSCCONL(OSCCON & 0xbf); // unlock PPS
