@@ -85,6 +85,8 @@ void adc_init1(){
 	AD1CON1bits.ASAM = 1; // Reference Manual
 	AD1CON2bits.SMPI = 0; // Reference Manual
 	AD1CON1bits.ADON = 1; // Turn on ADC
+
+    AD1CHSbits.CH0SA = 0;   // Select AN0 as the input 
     
 	_AD1IF = 0;
 	_AD1IE = 1; // Enable ADC interrupt
@@ -121,15 +123,16 @@ void pumpEnable(){
     	state = 0;
 }
 void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void){
-	putVal1(ADC1BUF0); // Call putVal() on adc_buffer1 with ADC1BUF0
-    //putVal2(ADC1BUF1); // Call putVal() on adc_buffer2 with ADC1BUF1
+    if(AD1CHSbits.CH0SA == 0){
+        putVal1(ADC1BUF0); // Call putVal() on adc_buffer1 with ADC1BUF0
+        AD1CHSbits.CH0SA = 1; //Switch AD input to AN1
+    }
+    else if(AD1CHSbits.CH0SA == 1){
+        putVal2(ADC1BUF0); // Call putVal() on adc_buffer2 with ADC1BUF0
+        AD1CHSbits.CH0SA = 0; //Switch AD input to AN0
+    }
 	IFS0bits.AD1IF = 0; // Reset the ADC interrupt flag
-}
-
-void __attribute__((interrupt, auto_psv)) _ADC2Interrupt(void){
-	//putVal1(ADC1BUF0); // Call putVal() on adc_buffer1 with ADC1BUF0
-    putVal2(ADC1BUF1); // Call putVal() on adc_buffer2 with ADC1BUF1
-	IFS0bits.AD1IF = 0; // Reset the ADC interrupt flag
+    
 }
 
 void __attribute__((interrupt, auto_psv)) _T2Interrupt() { // rollover for T2 ISR
