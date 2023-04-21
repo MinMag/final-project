@@ -108,6 +108,12 @@ void initPushButton(void) {
 	IC1BUF = 0;
 	IEC0bits.IC1IE = 1; // Input capture 1 Interrupt Enable
 }
+void pumpEnable(){
+    	LATBbits.LATB12 = 1;	// Set RB2 high
+    	delay_ms(1000);
+    	LATBbits.LATB12 = 0;	// Set RB2 low
+    	state = 0;
+}
 void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void){
 	putVal(ADC1BUF0, adc_buffer1, buffer_index1); // Call putVal() on adc_buffer1 with ADC1BUF0
 	IFS0bits.AD1IF = 0; // Reset the ADC interrupt flag
@@ -124,12 +130,7 @@ void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 	_IC1IF = 0;
 	pumpEnable();
 	}   
-void pumpEnable(){
-    	LATBbits.LATB12 = 1;	// Set RB2 high
-    	delay_ms(1000);
-    	LATBbits.LATB12 = 0;	// Set RB2 low
-    	state = 0;
-}
+
 void buzzerEnable(){
     LATBbits.LATB6 = 1; //sets RB6 as high
     delay_ms(2000);
