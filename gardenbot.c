@@ -13,7 +13,7 @@
 #pragma config FCKSM = CSECME    
 #pragma config FNOSC = FRCPLL
 #pragma config FWPSA = PR128       // Configures Prescalar for WDT, in this case 
-#pragma config WDTPS = PS32768     // Configures Postscalar for WDT
+#pragma config WDTPS = PS1024     // Configures Postscalar for WDT
                                    // WDT period (ms) = (FWPSA/32) * WDTPS
 
 #define BUFSIZE 1024
@@ -116,12 +116,11 @@ void pumpEnable(){
 }
 void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void){
 	putVal(ADC1BUF0, adc_buffer1, buffer_index1); // Call putVal() on adc_buffer1 with ADC1BUF0
+//    putVal(ADC1BUF1, adc_buffer2, buffer_index2); // Call putVal() on adc_buffer2 with ADC1BUF1
+
 	IFS0bits.AD1IF = 0; // Reset the ADC interrupt flag
 }
-void __attribute__((interrupt, auto_psv)) _ADC2Interrupt(void){
-    putVal(ADC1BUF1, adc_buffer2, buffer_index2); // Call putVal() on adc_buffer2 with ADC1BUF1
-    IFS0bits.AD1IF = 0; // Reset the ADC interrupt flag
-}
+
 void __attribute__((interrupt, auto_psv)) _T2Interrupt() { // rollover for T2 ISR
 	_T2IF = 0;
 	TMR2 = 0; 
@@ -134,15 +133,15 @@ void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 void buzzerEnable(){
     LATBbits.LATB6 = 1; //sets RB6 as high
     delay_ms(2000);
-    LATBbits = 0; // sets RB6 as low
+    LATBbits.LATB6 = 0; // sets RB6 as low
     
 }
 
 void loop() {
 	while (1) {
-    	while (IFS0bits.T1IF == 0);
-        IFS0bits.T1IF = 0;
-    	if(getAvg(adc_buffer2, buffer_index2) < WATERLEVELTHRESHOLD){
+//    	while (IFS0bits.T1IF == 0);
+//        IFS0bits.T1IF = 0;
+    	if(getAvg(adc_buffer1, buffer_index1) < WATERLEVELTHRESHOLD){
             buzzerEnable();
             
         	//Buzzer
@@ -152,11 +151,11 @@ void loop() {
         	if(getAvg(adc_buffer1, buffer_index1) < MOISTURETHRESHOLD){
             	pumpEnable(); //Water soil
             	//Wait 5 minutes
-                sleepNperiods(2); //Waiting ~4mins, 1 WDT period is 131 seconds approx.
+//                sleepNperiods(2); //Waiting ~4mins, 1 WDT period is 131 seconds approx.
         	}
         	else{
             	//Go to sleep
-                sleepNperiods(14); //Wait in sleep for approx. 30 minutes
+//                sleepNperiods(14); //Wait in sleep for approx. 30 minutes
         	}
     	}
    	 
@@ -169,6 +168,13 @@ int main() {
 	initPushButton();
 	adc_init1();
 	T2CONbits.TON = 1;
+    
+    LATBbits.LATB12=1;
+    delay_ms(1000);
+    LATBbits.LATB12=0;
+    LATBbits.LATB6 = 1;
+    delay_ms(1000);
+    LATBbits.LATB6 = 0;
     
 	loop();
     
