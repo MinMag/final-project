@@ -18,7 +18,7 @@
 
 #define BUFSIZE 1024
 #define NUMSAMPLES 30
-#define MOISTURETHRESHOLD 350 //ADC1
+#define MOISTURETHRESHOLD 558 //ADC1, I think this is for a threshold of 1.8V on 0-3.3 scale
 #define WATERLEVELTHRESHOLD 350 //ADC2
 
 unsigned int adc_buffer1[BUFSIZE];
@@ -157,9 +157,11 @@ void loop() {
         	if(getAvg1() < MOISTURETHRESHOLD){
             	pumpEnable(); //Water soil
             	//Wait 5 minutes
+                sleepNperiods(2); //Waiting ~4mins, 1 WDT period is 131 seconds approx.
         	}
         	else{
             	//Go to sleep
+                sleepNperiods(14); //Wait in sleep for approx. 30 minutes
         	}
     	}
    	 
