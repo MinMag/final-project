@@ -190,17 +190,44 @@ int main() {
 	adc_init1();
 	T2CONbits.TON = 1;
     
-    LATBbits.LATB12=1;
-    LATBbits.LATB6 = 1;
-    delay_ms(200);
-    LATBbits.LATB12=0;
-    LATBbits.LATB6 = 0;
-    delay_ms(200);
-    LATBbits.LATB12=1;
-    LATBbits.LATB6 = 1;
-    delay_ms(200);
-    LATBbits.LATB12=0;
-    LATBbits.LATB6 = 0;
+// Turn on RB12 and RB6 in a fun rhythm
+LATBbits.LATB12 = 1;   // Turn on RB12
+delay_ms(100);         // Delay for 100 ms
+LATBbits.LATB6 = 1;    // Turn on RB6
+delay_ms(50);          // Delay for 50 ms
+LATBbits.LATB12 = 0;   // Turn off RB12
+delay_ms(50);          // Delay for 50 ms
+LATBbits.LATB6 = 0;    // Turn off RB6
+delay_ms(100);         // Delay for 100 ms
+
+LATBbits.LATB6 = 1;    // Turn on RB6
+delay_ms(100);         // Delay for 100 ms
+LATBbits.LATB12 = 1;   // Turn on RB12
+delay_ms(50);          // Delay for 50 ms
+LATBbits.LATB6 = 0;    // Turn off RB6
+delay_ms(50);          // Delay for 50 ms
+LATBbits.LATB12 = 0;   // Turn off RB12
+delay_ms(100);         // Delay for 100 ms
+
+// Repeat the pattern one more time
+LATBbits.LATB12 = 1;   // Turn on RB12
+delay_ms(100);         // Delay for 100 ms
+LATBbits.LATB6 = 1;    // Turn on RB6
+delay_ms(50);          // Delay for 50 ms
+LATBbits.LATB12 = 0;   // Turn off RB12
+delay_ms(50);          // Delay for 50 ms
+LATBbits.LATB6 = 0;    // Turn off RB6
+delay_ms(100);         // Delay for 100 ms
+
+LATBbits.LATB6 = 1;    // Turn on RB6
+delay_ms(100);         // Delay for 100 ms
+LATBbits.LATB12 = 1;   // Turn on RB12
+delay_ms(50);          // Delay for 50 ms
+LATBbits.LATB6 = 0;    // Turn off RB6
+delay_ms(50);          // Delay for 50 ms
+LATBbits.LATB12 = 0;   // Turn off RB12
+delay_ms(100);         // Delay for 100 ms
+
     
     
 	loop();
