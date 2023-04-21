@@ -12,7 +12,7 @@
 #pragma config OSCIOFNC = ON 	 
 #pragma config FCKSM = CSECME    
 #pragma config FNOSC = FRCPLL
-#pragma config FWPSA = PR128       // Configures Prescalar for WDT, in this case 
+#pragma config FWPSA = PR32       // Configures Prescalar for WDT, in this case 
 #pragma config WDTPS = PS1024     // Configures Postscalar for WDT
                                    // WDT period (ms) = (FWPSA/32) * WDTPS
 
@@ -153,23 +153,30 @@ void buzzerEnable(){
 
 void loop() {
 	while (1) {
+        delay_ms(1000);
 //    	while (IFS0bits.T1IF == 0);
 //        IFS0bits.T1IF = 0;
     	if(getAvg(adc_buffer1, buffer_index1) < WATERLEVELTHRESHOLD){
             buzzerEnable();
-            
+            sleepNperiods(2); //Waiting 4 minutes before we 
         	//Buzzer
         	//Buzz more
     	}
     	else{
-        	if(getAvg(adc_buffer2, buffer_index2) < MOISTURETHRESHOLD){
+        	if(getAvg(adc_buffer2, buffer_index2) > MOISTURETHRESHOLD){
             	pumpEnable(); //Water soil
             	//Wait 5 minutes
-//                sleepNperiods(2); //Waiting ~4mins, 1 WDT period is 131 seconds approx.
+                sleepNperiods(2); //Waiting ~4mins, 1 WDT period is 131 seconds approx.
         	}
         	else{
             	//Go to sleep
-//                sleepNperiods(14); //Wait in sleep for approx. 30 minutes
+                sleepNperiods(2); //Wait in sleep for approx. 30 minutes
+               
+//                TMR1 = 0;
+//                T1CONbits.TON = 1;
+//                while(IFS0bits.T1IF ==0);
+//                IFS0bits.T1IF = 0;
+//                T1CONbits.TON = 0;
         	}
     	}
    	 
