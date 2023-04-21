@@ -121,7 +121,7 @@ void pumpEnable(){
     	state = 0;
 }
 void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void){
-	putVal(ADC1BUF0, adc_buffer1, buffer_index1); // Call putVal() on adc_buffer1 with ADC1BUF0
+	putVal1(ADC1BUF0); // Call putVal() on adc_buffer1 with ADC1BUF0
 //    putVal(ADC1BUF1, adc_buffer2, buffer_index2); // Call putVal() on adc_buffer2 with ADC1BUF1
 
 	IFS0bits.AD1IF = 0; // Reset the ADC interrupt flag
