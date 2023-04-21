@@ -56,10 +56,16 @@ unsigned int getAvg(unsigned int buffer[], int buffer_index){
     	unsigned int average = sum / NUMSAMPLES;
     	return average;
 }
-void putVal(unsigned int ADCvalue, unsigned int buffer[], int buffer_index){
-	buffer[buffer_index++] = ADCvalue;
-	if(buffer_index >= BUFSIZE){
-    	buffer_index = 0;
+void putVal1(unsigned int ADCvalue){
+	adc_buffer1[buffer_index1++] = ADCvalue;
+	if(buffer_index1 >= BUFSIZE){
+    	buffer_index1 = 0;
+	}
+}
+void putVal2(unsigned int ADCvalue){
+	adc_buffer2[buffer_index2++] = ADCvalue;
+	if(buffer_index2 >= BUFSIZE){
+    	buffer_index2 = 0;
 	}
 }
 void initBuffer(){
