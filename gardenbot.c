@@ -7,6 +7,7 @@
 #include <p24FJ64GA002.h>
 
 #include "xc.h"
+#include "WDT_lib.h"
 // CW1: FLASH CONFIGURATION WORD 1 (see PIC24 Family Reference Manual 24.1)
 #pragma config ICS = PGx1          // Comm Channel Select (Emulator EMUC1/EMUD1 pins are shared with PGC1/PGD1)
 #pragma config FWDTEN = OFF        // Watchdog Timer Enable (Watchdog Timer is disabled)
@@ -57,6 +58,7 @@ int main(void) {
             RCONbits.SWDTEN = 0;
             x++;
         }
+        sleepNperiods(2);
     }
     
     
