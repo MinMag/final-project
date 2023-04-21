@@ -133,7 +133,7 @@ void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void){
 }
 void __attribute__((interrupt, auto_psv)) _T2Interrupt() { // rollover for T2 ISR
 	_T2IF = 0;
-	TMR2 = 0;
+	TMR2 = 0; //Test comment
 }
 void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 	_IC1IF = 0;
