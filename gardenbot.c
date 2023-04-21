@@ -149,6 +149,7 @@ void pumpEnable(){
 void loop() {
 	while (1) {
     	while (IFS0bits.T1IF == 0);
+        IFS0bits.T1IF = 0;
     	if(getAvg2() < WATERLEVELTHRESHOLD){
         	//Buzzer
         	//Buzz more
@@ -165,7 +166,7 @@ void loop() {
         	}
     	}
    	 
-    	IFS0bits.T1IF = 0;
+   
 	}
 }
 int main() {
