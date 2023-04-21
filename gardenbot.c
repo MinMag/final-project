@@ -23,7 +23,8 @@
 
 unsigned int adc_buffer1[BUFSIZE];
 unsigned int adc_buffer2[BUFSIZE];
-volatile int buffer_index = 0;
+volatile int buffer_index1 = 0;
+volatile int buffer_index2 = 0;
 
 volatile int state = 0;
 
@@ -42,11 +43,11 @@ void pic24_setup(void){
 	TRISAbits.TRISA0 = 1;  // Set RA0/AN0 to Input
 	TRISAbits.TRISA1 = 1; // Set RA1/AN1 to Input
 }
-unsigned int getAvg1(){
+unsigned int getAvg(unsigned int buffer[], int buffer_index){
 	unsigned long sum = 0;
     	int index = buffer_index;
     	for (int i = 0; i < NUMSAMPLES; i++) {
-        	sum += adc_buffer1[index--]; // use decrementing index
+        	sum += buffer[index--]; // use decrementing index
         	if (index < 0) { // check for buffer underflow
             	index = BUFSIZE - 1;
         	}
@@ -54,26 +55,8 @@ unsigned int getAvg1(){
     	unsigned int average = sum / NUMSAMPLES;
     	return average;
 }
-unsigned int getAvg2(){
-	unsigned long sum = 0;
-    	int index = buffer_index;
-    	for (int i = 0; i < NUMSAMPLES; i++) {
-        	sum += adc_buffer2[index--]; // use decrementing index
-        	if (index < 0) { // check for buffer underflow
-            	index = BUFSIZE - 1;
-        	}
-    	}
-    	unsigned int average = sum / NUMSAMPLES;
-    	return average;
-}
-void putVal1(unsigned int ADCvalue){
-	adc_buffer1[buffer_index++] = ADCvalue;
-	if(buffer_index >= BUFSIZE){
-    	buffer_index = 0;
-	}
-}
-void putVal2(unsigned int ADCvalue){
-	adc_buffer2[buffer_index++] = ADCvalue;
+void putVal(unsigned int ADCvalue, unsigned int buffer[], int buffer_index){
+	buffer[buffer_index++] = ADCvalue;
 	if(buffer_index >= BUFSIZE){
     	buffer_index = 0;
 	}
@@ -126,14 +109,17 @@ void initPushButton(void) {
 }
 void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void){
 	// Call putVal() on ADC1BUF0
-	putVal1(ADC1BUF0);
-	putVal2(ADC1BUF1);
+	putVal(ADC1BUF0, adc_buffer1, buffer_index1);
 	// Reset the ADC interrupt flag
 	IFS0bits.AD1IF = 0;
 }
+void __attribute__((interrupt, auto_psv)) _ADC2Interrupt(void){
+    putVal(ADC1BUF1, adc_buffer2, buffer_index2);
+    IFS0bits.AD1IF = 0;
+}
 void __attribute__((interrupt, auto_psv)) _T2Interrupt() { // rollover for T2 ISR
 	_T2IF = 0;
-	TMR2 = 0; //Test comment
+	TMR2 = 0; 
 }
 void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 	_IC1IF = 0;
@@ -150,12 +136,12 @@ void loop() {
 	while (1) {
     	while (IFS0bits.T1IF == 0);
         IFS0bits.T1IF = 0;
-    	if(getAvg2() < WATERLEVELTHRESHOLD){
+    	if(getAvg(adc_buffer2, buffer_index2) < WATERLEVELTHRESHOLD){
         	//Buzzer
         	//Buzz more
     	}
     	else{
-        	if(getAvg1() < MOISTURETHRESHOLD){
+        	if(getAvg(adc_buffer1, buffer_index1) < MOISTURETHRESHOLD){
             	pumpEnable(); //Water soil
             	//Wait 5 minutes
                 sleepNperiods(2); //Waiting ~4mins, 1 WDT period is 131 seconds approx.
