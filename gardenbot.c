@@ -207,7 +207,6 @@ delay_ms(50);          // Delay for 50 ms
 LATBbits.LATB6 = 0;    // Turn off RB6
 delay_ms(50);          // Delay for 50 ms
 LATBbits.LATB12 = 0;   // Turn off RB12
-delay_ms(100);         // Delay for 100 ms
 
 loop();
     
