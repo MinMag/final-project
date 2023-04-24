@@ -1,6 +1,7 @@
 #include "xc.h"
 #include "WDT_lib.h"
 #include "ADC_lib.h"
+#include "buzzer_lib.h"
 #include <p24FJ64GA002.h>
 
 #pragma config ICS = PGx1
@@ -58,16 +59,7 @@ void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 	_IC1IF = 0;
 	pumpEnable();
 	}   
-void buzzerEnable(){
-    LATBbits.LATB6 = 1; //sets RB6 as high
-    
 
-}
-void buzzerDisable(){
-    overflow = 0;
-    while(overflow < 10 && getAvg1() < WATERLEVELTHRESHOLD);
-    LATBbits.LATB6 = 0; // sets RB6 as low
-}
 void loop() {
 	while (1) {
         delay_ms(1000);
@@ -75,7 +67,7 @@ void loop() {
 //        IFS0bits.T1IF = 0;
      	if(getAvg2() < WATERLEVELTHRESHOLD){
             buzzerEnable();
-            buzzerDisable();
+            buzzerDisable(overflow);
             sleepNperiods(2); //Waiting 4 minutes before we 
         	//Buzzer
         	//Buzz more
