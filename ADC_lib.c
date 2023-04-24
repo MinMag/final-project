@@ -27,7 +27,7 @@ void pic24_setup(void){
 	TRISAbits.TRISA0 = 1;  // Set RA0/AN0 to Input
 	TRISAbits.TRISA1 = 1; // Set RA1/AN1 to Input
 }
-unsigned int getAvg1(){
+unsigned int getAvgWaterLevel(){
 	unsigned long sum = 0;
     	int index = buffer_index1;
     	for (int i = 0; i < NUMSAMPLES; i++) {
@@ -39,7 +39,7 @@ unsigned int getAvg1(){
     	unsigned int average = sum / NUMSAMPLES;
     	return average;
 }
-unsigned int getAvg2(){
+unsigned int getAvgMoisture(){
 	unsigned long sum = 0;
     	int index = buffer_index2;
     	for (int i = 0; i < NUMSAMPLES; i++) {
