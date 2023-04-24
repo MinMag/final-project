@@ -58,6 +58,7 @@ void __attribute__((interrupt, auto_psv)) _T2Interrupt() { // rollover for T2 IS
 void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 	_IC1IF = 0;
 	pumpEnable();
+    pumpDisable();
 	}   
 
 void loop() {
