@@ -117,9 +117,9 @@ void initPushButton(void) {
 	IEC0bits.IC1IE = 1; // Input capture 1 Interrupt Enable
 }
 void pumpEnable(){
-    	LATBbits.LATB12 = 1;	// Set RB2 high
+    	LATBbits.LATB12 = 1;	// Set RB12 high
     	delay_ms(1000);
-    	LATBbits.LATB12 = 0;	// Set RB2 low
+    	LATBbits.LATB12 = 0;	// Set RB12 low
     	state = 0;
 }
 void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void){
