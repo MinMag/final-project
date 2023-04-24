@@ -26,7 +26,7 @@ unsigned int adc_buffer2[BUFSIZE];
 volatile int buffer_index1 = 0;
 volatile int buffer_index2 = 0;
 
-volatile int state = 0;
+
 
 void delay_ms(unsigned int ms) {
 	while (ms-- > 0) {
@@ -119,8 +119,10 @@ void initPushButton(void) {
 void pumpEnable(){
     	LATBbits.LATB12 = 1;	// Set RB12 high
     	delay_ms(1000);
-    	LATBbits.LATB12 = 0;	// Set RB12 low
-    	state = 0;
+}
+
+void pumpDisable(){
+       LATBbits.LATB12 = 0;	// Set RB12 low
 }
 void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void){
     if(AD1CHSbits.CH0SA == 0){
@@ -147,8 +149,10 @@ void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 void buzzerEnable(){
     LATBbits.LATB6 = 1; //sets RB6 as high
     delay_ms(2000);
+}
+
+void buzzerDisable(){
     LATBbits.LATB6 = 0; // sets RB6 as low
-    
 }
 
 void loop() {
