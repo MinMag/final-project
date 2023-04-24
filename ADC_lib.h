@@ -14,6 +14,7 @@ extern "C" {
     
 void delay_ms(unsigned int ms);
 void pic24_setup(void);
+unsigned int getAvg(unsigned int buffer[], int buffer_index);
 void putVal1(unsigned int ADCvalue);
 void putVal2(unsigned int ADCvalue);
 void initBuffer();

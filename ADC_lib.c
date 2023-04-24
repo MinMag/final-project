@@ -3,6 +3,11 @@
 #include "ADC_lib.h"
 #include <p24FJ64GA002.h>
 
+#define BUFSIZE 1024
+#define NUMSAMPLES 30
+#define MOISTURETHRESHOLD (1.8/3.3)*1023 //ADC1, I think this is for a threshold of 1.8V on 0-3.3 scale
+#define WATERLEVELTHRESHOLD (1.65/3.3)*1023 //ADC2
+
 unsigned int adc_buffer1[BUFSIZE];
 unsigned int adc_buffer2[BUFSIZE];
 volatile int buffer_index1 = 0;
@@ -23,6 +28,18 @@ void pic24_setup(void){
     TRISBbits.TRISB6 = 0; // Set RB6 as an output
 	TRISAbits.TRISA0 = 1;  // Set RA0/AN0 to Input
 	TRISAbits.TRISA1 = 1; // Set RA1/AN1 to Input
+}
+unsigned int getAvg(unsigned int buffer[], int buffer_index){
+	unsigned long sum = 0;
+    	int index = buffer_index;
+    	for (int i = 0; i < NUMSAMPLES; i++) {
+        	sum += buffer[index--]; // use decrementing index
+        	if (index < 0) { // check for buffer underflow
+            	index = BUFSIZE - 1;
+        	}
+    	}
+    	unsigned int average = sum / NUMSAMPLES;
+    	return average;
 }
 void putVal1(unsigned int ADCvalue){
 	adc_buffer1[buffer_index1++] = ADCvalue;
