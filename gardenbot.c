@@ -17,8 +17,8 @@
 #pragma config WDTPS = PS1024     // Configures Postscalar for WDT
                                    // WDT period (ms) = (FWPSA/32) * WDTPS
  
-#define MOISTURETHRESHOLD (1.8/3.3)*1023 //ADC1, I think this is for a threshold of 1.8V on 0-3.3 scale
-#define WATERLEVELTHRESHOLD (1.65/3.3)*1023 //ADC2
+#define MOISTURETHRESHOLD (1.8/3.3)*1023 //ADC1, Threshold of 1.8V
+#define WATERLEVELTHRESHOLD (1.65/3.3)*1023 //ADC2, Threshold of 1.65V
 
 volatile int overflow = 0;
 
