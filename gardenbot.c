@@ -22,6 +22,8 @@
 #define MOISTURETHRESHOLD (1.8/3.3)*1023 //ADC1, I think this is for a threshold of 1.8V on 0-3.3 scale
 #define WATERLEVELTHRESHOLD (1.65/3.3)*1023 //ADC2
 
+volatile int overflow = 0;
+
 void initPushButton(void) {
 	__builtin_write_OSCCONL(OSCCON & 0xbf); // unlock PPS
 	RPINR7bits.IC1R = 8; // Use Pin RP8 = "8", for Input Capture 1 (Table 10-2)
@@ -46,11 +48,13 @@ void pumpEnable(){
     	delay_ms(1000);
 }
 void pumpDisable(){
-       LATBbits.LATB12 = 0;	// Set RB12 low
+        LATBbits.LATB12 = 0;	// Set RB12 low
+    	LATBbits.LATB12 = 0;	// Set RB12 low
 }
 void __attribute__((interrupt, auto_psv)) _T2Interrupt() { // rollover for T2 ISR
 	_T2IF = 0;
 	TMR2 = 0; 
+    overflow +=1;
 }
 void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 	_IC1IF = 0;
@@ -59,10 +63,8 @@ void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 
 void buzzerEnable(){
     LATBbits.LATB6 = 1; //sets RB6 as high
-    delay_ms(2000);
-}
-
-void buzzerDisable(){
+    overflow = 0;
+    while(overflow < 10 && getAvg1() < WATERLEVELTHRESHOLD);
     LATBbits.LATB6 = 0; // sets RB6 as low
 }
 
@@ -71,14 +73,14 @@ void loop() {
         delay_ms(1000);
 //    	while (IFS0bits.T1IF == 0);
 //        IFS0bits.T1IF = 0;
-    	if(getAvg(adc_buffer1, buffer_index1) < WATERLEVELTHRESHOLD){
+     	if(getAvg2() < WATERLEVELTHRESHOLD){
             buzzerEnable();
             sleepNperiods(2); //Waiting 4 minutes before we 
         	//Buzzer
         	//Buzz more
     	}
     	else{
-        	if(getAvg(adc_buffer2, buffer_index2) > MOISTURETHRESHOLD){
+        	if(getAvg2() > MOISTURETHRESHOLD){
             	pumpEnable(); //Water soil
             	//Wait 5 minutes
                 sleepNperiods(2); //Waiting ~4mins, 1 WDT period is 131 seconds approx.

@@ -29,11 +29,23 @@ void pic24_setup(void){
 	TRISAbits.TRISA0 = 1;  // Set RA0/AN0 to Input
 	TRISAbits.TRISA1 = 1; // Set RA1/AN1 to Input
 }
-unsigned int getAvg(unsigned int buffer[], int buffer_index){
+unsigned int getAvg1(){
 	unsigned long sum = 0;
-    	int index = buffer_index;
+    	int index = buffer_index1;
     	for (int i = 0; i < NUMSAMPLES; i++) {
-        	sum += buffer[index--]; // use decrementing index
+        	sum += adc_buffer1[index--]; // use decrementing index
+        	if (index < 0) { // check for buffer underflow
+            	index = BUFSIZE - 1;
+        	}
+    	}
+    	unsigned int average = sum / NUMSAMPLES;
+    	return average;
+}
+unsigned int getAvg2(){
+	unsigned long sum = 0;
+    	int index = buffer_index2;
+    	for (int i = 0; i < NUMSAMPLES; i++) {
+        	sum += adc_buffer2[index--]; // use decrementing index
         	if (index < 0) { // check for buffer underflow
             	index = BUFSIZE - 1;
         	}
