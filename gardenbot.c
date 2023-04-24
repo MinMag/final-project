@@ -60,15 +60,6 @@ void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 	pumpEnable();
 	}   
 
-<<<<<<< HEAD
-=======
-}
-void buzzerDisable(){
-    overflow = 0;
-    while(overflow < 10 && getAvgWaterLevel() < WATERLEVELTHRESHOLD);
-    LATBbits.LATB6 = 0; // sets RB6 as low
-}
->>>>>>> 6dbbc34150648be3c5535963b106c844e709433f
 void loop() {
 	while (1) {
         delay_ms(1000);

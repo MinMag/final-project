@@ -6,6 +6,7 @@
                    projectFiles="true">
       <itemPath>WDT_lib.h</itemPath>
       <itemPath>ADC_lib.h</itemPath>
+      <itemPath>buzzer_lib.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -17,6 +18,7 @@
       <itemPath>gardenbot.c</itemPath>
       <itemPath>WDT_lib.c</itemPath>
       <itemPath>ADC_lib.c</itemPath>
+      <itemPath>buzzer_lib.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -1233,7 +1235,7 @@
         <property key="communication.interface.jtag" value="2wire"/>
         <property key="communication.speed" value="${communication.speed.default}"/>
         <property key="debugoptions.simultaneous.debug" value="false"/>
-        <property key="debugoptions.useswbreakpoints" value="true"/>
+        <property key="debugoptions.useswbreakpoints" value="false"/>
         <property key="freeze.timers" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>

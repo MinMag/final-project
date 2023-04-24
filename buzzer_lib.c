@@ -11,6 +11,6 @@ void buzzerEnable(){
 
 void buzzerDisable(volatile int overflow){
     overflow = 0;
-    while(overflow < 10 && getAvg1() < WATERLEVELTHRESHOLD);
+    while(overflow < 10 && getAvgWaterLevel() < WATERLEVELTHRESHOLD);
     LATBbits.LATB6 = 0; // sets RB6 as low
 }
