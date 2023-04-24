@@ -60,6 +60,10 @@ void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 	}   
 void buzzerEnable(){
     LATBbits.LATB6 = 1; //sets RB6 as high
+    
+
+}
+void buzzerDisable(){
     overflow = 0;
     while(overflow < 10 && getAvg1() < WATERLEVELTHRESHOLD);
     LATBbits.LATB6 = 0; // sets RB6 as low
@@ -71,6 +75,7 @@ void loop() {
 //        IFS0bits.T1IF = 0;
      	if(getAvg2() < WATERLEVELTHRESHOLD){
             buzzerEnable();
+            buzzerDisable();
             sleepNperiods(2); //Waiting 4 minutes before we 
         	//Buzzer
         	//Buzz more
@@ -78,6 +83,7 @@ void loop() {
     	else{
         	if(getAvg1() > MOISTURETHRESHOLD){
             	pumpEnable(); //Water soil
+                pumpDisable();
             	//Wait 5 minutes
                 sleepNperiods(2); //Waiting ~4mins, 1 WDT period is 131 seconds approx.
         	}
