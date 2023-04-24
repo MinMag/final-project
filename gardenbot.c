@@ -16,9 +16,7 @@
 #pragma config FWPSA = PR32       // Configures Prescalar for WDT, in this case 
 #pragma config WDTPS = PS1024     // Configures Postscalar for WDT
                                    // WDT period (ms) = (FWPSA/32) * WDTPS
-
-#define BUFSIZE
-#define NUMSAMPLES 
+ 
 #define MOISTURETHRESHOLD (1.8/3.3)*1023 //ADC1, I think this is for a threshold of 1.8V on 0-3.3 scale
 #define WATERLEVELTHRESHOLD (1.65/3.3)*1023 //ADC2
 
@@ -60,14 +58,12 @@ void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 	_IC1IF = 0;
 	pumpEnable();
 	}   
-
 void buzzerEnable(){
     LATBbits.LATB6 = 1; //sets RB6 as high
     overflow = 0;
     while(overflow < 10 && getAvg1() < WATERLEVELTHRESHOLD);
     LATBbits.LATB6 = 0; // sets RB6 as low
 }
-
 void loop() {
 	while (1) {
         delay_ms(1000);

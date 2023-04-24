@@ -5,8 +5,6 @@
 
 #define BUFSIZE 1024
 #define NUMSAMPLES 30
-#define MOISTURETHRESHOLD (1.8/3.3)*1023 //ADC1, I think this is for a threshold of 1.8V on 0-3.3 scale
-#define WATERLEVELTHRESHOLD (1.65/3.3)*1023 //ADC2
 
 unsigned int adc_buffer1[BUFSIZE];
 unsigned int adc_buffer2[BUFSIZE];
