@@ -13,7 +13,7 @@ extern "C" {
 #endif
 
 void buzzerEnable();
-void buzzerDisable(volatile int overflow);
+void buzzerDisable(volatile int* overflow);
 
 
 #ifdef	__cplusplus

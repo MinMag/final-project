@@ -67,7 +67,7 @@ void loop() {
 //        IFS0bits.T1IF = 0;
      	if(getAvgWaterLevel() < WATERLEVELTHRESHOLD){
             buzzerEnable();
-            buzzerDisable(overflow);
+            buzzerDisable(&overflow);
             sleepNperiods(2); //Waiting 4 minutes before we 
         	//Buzzer
         	//Buzz more
