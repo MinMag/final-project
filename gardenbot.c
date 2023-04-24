@@ -76,7 +76,7 @@ void loop() {
         	//Buzz more
     	}
     	else{
-        	if(getAvg2() > MOISTURETHRESHOLD){
+        	if(getAvg1() > MOISTURETHRESHOLD){
             	pumpEnable(); //Water soil
             	//Wait 5 minutes
                 sleepNperiods(2); //Waiting ~4mins, 1 WDT period is 131 seconds approx.
