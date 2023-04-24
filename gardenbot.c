@@ -26,7 +26,7 @@ unsigned int adc_buffer2[BUFSIZE];
 volatile int buffer_index1 = 0;
 volatile int buffer_index2 = 0;
 
-volatile int state = 0;
+volatile int overflow = 0;
 
 void delay_ms(unsigned int ms) {
 	while (ms-- > 0) {
@@ -120,7 +120,7 @@ void pumpEnable(){
     	LATBbits.LATB12 = 1;	// Set RB12 high
     	delay_ms(1000);
     	LATBbits.LATB12 = 0;	// Set RB12 low
-    	state = 0;
+
 }
 void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void){
     if(AD1CHSbits.CH0SA == 0){
@@ -138,6 +138,7 @@ void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void){
 void __attribute__((interrupt, auto_psv)) _T2Interrupt() { // rollover for T2 ISR
 	_T2IF = 0;
 	TMR2 = 0; 
+    overflow +=1;
 }
 void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 	_IC1IF = 0;
@@ -146,7 +147,8 @@ void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 
 void buzzerEnable(){
     LATBbits.LATB6 = 1; //sets RB6 as high
-    delay_ms(2000);
+    overflow = 0;
+    while(overflow < 10 && getAvg(adc_buffer1, buffer_index1) < WATERLEVELTHRESHOLD);
     LATBbits.LATB6 = 0; // sets RB6 as low
     
 }
