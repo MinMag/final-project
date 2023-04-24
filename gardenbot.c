@@ -17,8 +17,8 @@
 #pragma config WDTPS = PS1024     // Configures Postscalar for WDT
                                    // WDT period (ms) = (FWPSA/32) * WDTPS
  
-#define MOISTURETHRESHOLD (1.8/3.3)*1023 //ADC1, Threshold of 1.8V
-#define WATERLEVELTHRESHOLD (1.65/3.3)*1023 //ADC2, Threshold of 1.65V
+#define MOISTURETHRESHOLD (1.8/3.3)*1023 //ADC2, Threshold of 1.8V
+#define WATERLEVELTHRESHOLD (1.65/3.3)*1023 //ADC1, Threshold of 1.65V
 
 volatile int overflow = 0;
 
@@ -65,7 +65,7 @@ void buzzerEnable(){
 }
 void buzzerDisable(){
     overflow = 0;
-    while(overflow < 10 && getAvg1() < WATERLEVELTHRESHOLD);
+    while(overflow < 10 && getAvgWaterLevel() < WATERLEVELTHRESHOLD);
     LATBbits.LATB6 = 0; // sets RB6 as low
 }
 void loop() {
@@ -73,7 +73,7 @@ void loop() {
         delay_ms(1000);
 //    	while (IFS0bits.T1IF == 0);
 //        IFS0bits.T1IF = 0;
-     	if(getAvg2() < WATERLEVELTHRESHOLD){
+     	if(getAvgWaterLevel() < WATERLEVELTHRESHOLD){
             buzzerEnable();
             buzzerDisable();
             sleepNperiods(2); //Waiting 4 minutes before we 
@@ -81,7 +81,7 @@ void loop() {
         	//Buzz more
     	}
     	else{
-        	if(getAvg1() > MOISTURETHRESHOLD){
+        	if(getAvgMoisture() > MOISTURETHRESHOLD){
             	pumpEnable(); //Water soil
                 pumpDisable();
             	//Wait 5 minutes
