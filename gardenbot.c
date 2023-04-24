@@ -150,7 +150,6 @@ void buzzerEnable(){
     overflow = 0;
     while(overflow < 10 && getAvg(adc_buffer1, buffer_index1) < WATERLEVELTHRESHOLD);
     LATBbits.LATB6 = 0; // sets RB6 as low
-    
 }
 
 void loop() {
