@@ -11,12 +11,17 @@ unsigned int adc_buffer2[BUFSIZE];
 volatile int buffer_index1 = 0;
 volatile int buffer_index2 = 0;
 
+/* Adapted ASM Code to delay milliseconds by an integer parameter */
 void delay_ms(unsigned int ms) {
 	while (ms-- > 0) {
     	asm("repeat #15998");
     	asm("nop");
 	}
 }
+
+/* Set the clock speed and analog, input, and output statuses of 
+ * the pic24 pins
+ */
 void pic24_setup(void){
 	_RCDIV = 0;
 	AD1PCFG = 0x7FFE;
@@ -27,6 +32,11 @@ void pic24_setup(void){
 	TRISAbits.TRISA0 = 1;  // Set RA0/AN0 to Input
 	TRISAbits.TRISA1 = 1; // Set RA1/AN1 to Input
 }
+
+/* Gets a moving average of the ADC buffer associated with the Water Level Sensor
+ * by decrementing and adding to a sum with a defined number of samples
+ * all while checking for underflow
+*/ 
 unsigned int getAvgWaterLevel(){
 	unsigned long sum = 0;
     	int index = buffer_index1;
@@ -39,6 +49,11 @@ unsigned int getAvgWaterLevel(){
     	unsigned int average = sum / NUMSAMPLES;
     	return average;
 }
+
+/* Gets a moving average of the ADC buffer associated with the Moisture Sensor 
+ * by decrementing and adding to a sum with a defined number of samples
+ * all while checking for underflow
+*/ 
 unsigned int getAvgMoisture(){
 	unsigned long sum = 0;
     	int index = buffer_index2;
@@ -51,18 +66,28 @@ unsigned int getAvgMoisture(){
     	unsigned int average = sum / NUMSAMPLES;
     	return average;
 }
+/* Adds an integer parameter value to a buffer associated with the Water Level Sensor
+ * attached to AN0 and checking for overflow
+ */
 void putVal1(unsigned int ADCvalue){
 	adc_buffer1[buffer_index1++] = ADCvalue;
 	if(buffer_index1 >= BUFSIZE){
     	buffer_index1 = 0;
 	}
 }
+
+/* Adds an integer parameter value to a buffer associated with the Moisture Sensor
+ * attached to AN1 and checking for overflow
+ */
 void putVal2(unsigned int ADCvalue){
 	adc_buffer2[buffer_index2++] = ADCvalue;
 	if(buffer_index2 >= BUFSIZE){
     	buffer_index2 = 0;
 	}
 }
+
+/* Initializes 2 ADC buffers at a defined size to all 0 values
+ */
 void initBuffer(){
 	int i;
 	for(i=0; i < BUFSIZE; i++){
@@ -70,6 +95,9 @@ void initBuffer(){
     	adc_buffer2[i] = 0;
 	}
 }
+/* Initializes ADC by assigning reference voltages, assigning timer3 and the sample time to the ADC,
+ * and initializing AN0 as the ADC input
+ */
 void adc_init1(){
 	AD1CON2bits.VCFG = 0b000; // VDD max (3.3V) and VSS min (0V)
     
@@ -92,6 +120,10 @@ void adc_init1(){
 	PR3 = 15624/2;
 	T3CONbits.TON = 1; // 32 times per second
 }
+
+/* For every sample time (Associated with timer3), a value is added to the corresponding 
+ * ADC buffer to the current input pin (AN0/AN1) and then the ADC input is switched to the other pin
+ */
 void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void){
     if(AD1CHSbits.CH0SA == 0){
         putVal1(ADC1BUF0); // Call putVal() on adc_buffer1 with ADC1BUF0
