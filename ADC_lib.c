@@ -5,6 +5,7 @@
 
 #define BUFSIZE 1024
 #define NUMSAMPLES 30
+#define INITWATERLEVEL 1000
 
 unsigned int adc_buffer1[BUFSIZE];
 unsigned int adc_buffer2[BUFSIZE];
@@ -91,7 +92,7 @@ void putVal2(unsigned int ADCvalue){
 void initBuffer(){
 	int i;
 	for(i=0; i < BUFSIZE; i++){
-    	adc_buffer1[i] = 0;
+    	adc_buffer1[i] = INITWATERLEVEL;
     	adc_buffer2[i] = 0;
 	}
 }
