@@ -11,8 +11,14 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-
+    
+/* When called, RB6 is enabled, causing the buzzer to go of
+ */
 void buzzerEnable();
+
+/* When called, buzzer stays on for 10 seconds 
+ * or until the water threshold increases
+ */
 void buzzerDisable(volatile int* overflow);
 
 
