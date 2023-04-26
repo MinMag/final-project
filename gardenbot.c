@@ -66,7 +66,7 @@ void loop() {
         delay_ms(1000);
 //    	while (IFS0bits.T1IF == 0);
 //        IFS0bits.T1IF = 0;
-     	if(getAvgWaterLevel() < WATERLEVELTHRESHOLD){
+     	if(getAvgWaterLevel() < WATERLEVELTHRESHOLD){ //Water Level Voltage is Low when Dry
             buzzerEnable();
             buzzerDisable(&overflow);
             sleepNperiods(2); //Waiting 4 minutes before we 
@@ -74,7 +74,7 @@ void loop() {
         	//Buzz more
     	}
     	else{
-        	if(getAvgMoisture() > MOISTURETHRESHOLD){
+        	if(getAvgMoisture() > MOISTURETHRESHOLD){ //Moisture Voltage is High when Dry
             	pumpEnable(); //Water soil
                 pumpDisable();
             	//Wait 5 minutes
