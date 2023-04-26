@@ -7,7 +7,7 @@
 void buzzerEnable(){
     LATBbits.LATB6 = 1; //sets RB6 as high
 }
-
+   
 void buzzerDisable(volatile int* overflow){
     *overflow = 0;
     while(*overflow < 10 && getAvgWaterLevel() < WATERLEVELTHRESHOLD);
