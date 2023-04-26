@@ -1,7 +1,7 @@
 /*
  * File:   WDT_lib.c
- * Author: magnu
- *
+ * Author: GardenBot Team
+ * Purpose: 
  * Created on April 20, 2023, 7:55 PM
  */
 

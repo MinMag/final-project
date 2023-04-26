@@ -19,7 +19,7 @@
 #pragma config WDTPS = PS1024     // Configures Postscalar for WDT
                                   // WDT period (ms) = (FWPSA/32) * WDTPS
  
-#define MOISTURETHRESHOLD (1.8/3.3)*1023 //ADC2, Threshold of 1.8V
+#define MOISTURETHRESHOLD (1.95/3.3)*1023 //ADC2, Threshold of 1.8V
 #define WATERLEVELTHRESHOLD (1.65/3.3)*1023 //ADC1, Threshold of 1.65V
 
 volatile int overflow = 0; //A variable to allow for early exit from
@@ -98,22 +98,22 @@ int main() {
 	T2CONbits.TON = 1;
     
     // Turn on RB12 and RB6 in a startup rhythm
-    LATBbits.LATB12 = 1;   // Turn on RB12
-    delay_ms(100);         // Delay for 100 ms
-    LATBbits.LATB6 = 1;    // Turn on RB6
-    delay_ms(50);          // Delay for 50 ms
-    LATBbits.LATB12 = 0;   // Turn off RB12
-    delay_ms(50);          // Delay for 50 ms
-    LATBbits.LATB6 = 0;    // Turn off RB6
-    delay_ms(100);         // Delay for 100 ms
-
-    LATBbits.LATB6 = 1;    // Turn on RB6
-    delay_ms(100);         // Delay for 100 ms
-    LATBbits.LATB12 = 1;   // Turn on RB12
-    delay_ms(50);          // Delay for 50 ms
-    LATBbits.LATB6 = 0;    // Turn off RB6
-    delay_ms(50);          // Delay for 50 ms
-    LATBbits.LATB12 = 0;   // Turn off RB12
+//    LATBbits.LATB12 = 1;   // Turn on RB12
+//    delay_ms(100);         // Delay for 100 ms
+//    LATBbits.LATB6 = 1;    // Turn on RB6
+//    delay_ms(50);          // Delay for 50 ms
+//    LATBbits.LATB12 = 0;   // Turn off RB12
+//    delay_ms(50);          // Delay for 50 ms
+//    LATBbits.LATB6 = 0;    // Turn off RB6
+//    delay_ms(100);         // Delay for 100 ms
+//
+//    LATBbits.LATB6 = 1;    // Turn on RB6
+//    delay_ms(100);         // Delay for 100 ms
+//    LATBbits.LATB12 = 1;   // Turn on RB12
+//    delay_ms(50);          // Delay for 50 ms
+//    LATBbits.LATB6 = 0;    // Turn off RB6
+//    delay_ms(50);          // Delay for 50 ms
+//    LATBbits.LATB12 = 0;   // Turn off RB12
 
     loop();
     
