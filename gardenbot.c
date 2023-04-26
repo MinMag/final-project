@@ -5,7 +5,8 @@
 #include <p24FJ64GA002.h>
 
 #pragma config ICS = PGx1
-#pragma config FWDTEN = OFF    
+#pragma config FWDTEN = OFF //This must be configured to OFF to allow for proper
+                            //sleep functionality
 #pragma config GWRP = OFF   	 
 #pragma config GCP = OFF    	 
 #pragma config JTAGEN = OFF	 
@@ -16,12 +17,13 @@
 #pragma config FNOSC = FRCPLL
 #pragma config FWPSA = PR32       // Configures Prescalar for WDT, in this case 
 #pragma config WDTPS = PS1024     // Configures Postscalar for WDT
-                                   // WDT period (ms) = (FWPSA/32) * WDTPS
+                                  // WDT period (ms) = (FWPSA/32) * WDTPS
  
 #define MOISTURETHRESHOLD (1.8/3.3)*1023 //ADC2, Threshold of 1.8V
 #define WATERLEVELTHRESHOLD (1.65/3.3)*1023 //ADC1, Threshold of 1.65V
 
-volatile int overflow = 0;
+volatile int overflow = 0; //A variable to allow for early exit from
+                           //buzzerDisable() function
 
 void initPushButton(void) {
 	__builtin_write_OSCCONL(OSCCON & 0xbf); // unlock PPS
@@ -53,7 +55,7 @@ void pumpDisable(){
 void __attribute__((interrupt, auto_psv)) _T2Interrupt() { // rollover for T2 ISR
 	_T2IF = 0;
 	TMR2 = 0; 
-    overflow +=1;
+    overflow +=1; //This variable is used in the buzzerDisable function
 }
 void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 	_IC1IF = 0;
@@ -63,13 +65,13 @@ void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 
 void loop() {
 	while (1) {
-        delay_ms(1000);
-//    	while (IFS0bits.T1IF == 0);
-//        IFS0bits.T1IF = 0;
+        delay_ms(1000); //This blocking delay gives the ADC enough time
+                        //to ensure we are only acting on data captured
+                        //during this active period
      	if(getAvgWaterLevel() < WATERLEVELTHRESHOLD){ //Water Level Voltage is Low when Dry
             buzzerEnable();
             buzzerDisable(&overflow);
-            sleepNperiods(2); //Waiting 4 minutes before we 
+            sleepNperiods(2); //Sleeping 8 seconds before we continue
         	//Buzzer
         	//Buzz more
     	}
@@ -78,17 +80,12 @@ void loop() {
             	pumpEnable(); //Water soil
                 pumpDisable();
             	//Wait 5 minutes
-                sleepNperiods(2); //Waiting ~4mins, 1 WDT period is 131 seconds approx.
+                sleepNperiods(2); //Sleeping 8, 1 WDT period is 4 seconds approx.
         	}
         	else{
-            	//Go to sleep
-                sleepNperiods(2); //Wait in sleep for approx. 30 minutes
-               
-//                TMR1 = 0;
-//                T1CONbits.TON = 1;
-//                while(IFS0bits.T1IF ==0);
-//                IFS0bits.T1IF = 0;
-//                T1CONbits.TON = 0;
+            	//Nothing is needed to be done in this active period since
+                //the water level is high and the soil is moist
+                sleepNperiods(2); //Sleeping in sleep for approx. 8 seconds
         	}
     	}
    	 
