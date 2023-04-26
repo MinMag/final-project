@@ -50,7 +50,6 @@ void pumpEnable(){
 }
 void pumpDisable(){
         LATBbits.LATB12 = 0;	// Set RB12 low
-    	LATBbits.LATB12 = 0;	// Set RB12 low
 }
 void __attribute__((interrupt, auto_psv)) _T2Interrupt() { // rollover for T2 ISR
 	_T2IF = 0;
@@ -79,7 +78,6 @@ void loop() {
         	if(getAvgMoisture() > MOISTURETHRESHOLD){ //Moisture Voltage is High when Dry
             	pumpEnable(); //Water soil
                 pumpDisable();
-            	//Wait 5 minutes
                 sleepNperiods(2); //Sleeping 8, 1 WDT period is 4 seconds approx.
         	}
         	else{
