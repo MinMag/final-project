@@ -87,7 +87,7 @@ void putVal2(unsigned int ADCvalue){
 	}
 }
 
-/* Initializes 2 ADC buffers at a defined size to all 0 values
+/* Initializes 2 ADC buffers at a defined size to base values
  */
 void initBuffer(){
 	int i;
