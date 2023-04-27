@@ -77,8 +77,6 @@ void loop() {
                 sleepNperiods(2); //Sleeping in sleep for approx. 8 seconds
         	}
     	}
-   	 
-   
 	}
 }
 int main() {
