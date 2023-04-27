@@ -64,8 +64,6 @@ void loop() {
             buzzerEnable();
             buzzerDisable(&overflow);
             sleepNperiods(2); //Sleeping 8 seconds before we continue
-        	//Buzzer
-        	//Buzz more
     	}
     	else{
         	if(getAvgMoisture() > MOISTURETHRESHOLD){ //Moisture Voltage is High when Dry
