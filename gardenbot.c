@@ -57,26 +57,32 @@ void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
 
 void loop() {
 	while (1) {
-        delay_ms(1000); //This blocking delay gives the ADC enough time
-                        //to ensure we are only acting on data captured
-                        //during this active period
-     	if(getAvgWaterLevel() < WATERLEVELTHRESHOLD){ //Water Level Voltage is Low when Dry
+       /* This blocking delay gives the ADC enough time
+        * to ensure we are only acting on data captured
+        * during this active period
+        */
+        delay_ms(1000); 
+        //Water Level Voltage is Low when Dry
+     	if(getAvgWaterLevel() < WATERLEVELTHRESHOLD){ 
             buzzerEnable();
             buzzerDisable(&overflow);
-            sleepNperiods(2); //Sleeping 8 seconds before we continue
+            //Sleeping 8 seconds before we continue
+            sleepNperiods(2); 
     	}
-    	else{
-        	if(getAvgMoisture() > MOISTURETHRESHOLD){ //Moisture Voltage is High when Dry
-            	pumpEnable(); //Water soil
+        //Moisture Voltage is High when Dry
+    	else if(getAvgMoisture() > MOISTURETHRESHOLD){
+                //Water soil
+            	pumpEnable(); 
                 pumpDisable();
-                sleepNperiods(2); //Sleeping 8, 1 WDT period is 4 seconds approx.
+                //Sleeping 8, 1 WDT period is 4 seconds approx.
+                sleepNperiods(2); 
         	}
-        	else{
+        else {
             	//Nothing is needed to be done in this active period since
                 //the water level is high and the soil is moist
-                sleepNperiods(2); //Sleeping in sleep for approx. 8 seconds
+                //Sleeping in sleep for approx. 8 seconds
+                sleepNperiods(2); 
         	}
-    	}
 	}
 }
 int main() {
