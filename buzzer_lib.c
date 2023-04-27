@@ -18,3 +18,16 @@ void buzzerDisable(volatile int* overflow){
     while(*overflow < 3 && getAvgWaterLevel() < WATERLEVELTHRESHOLD); //Keeps buzzer on for 10 seconds or until the water level passes the threshold
     LATBbits.LATB6 = 0; // sets RB6 as low
 }
+
+/* Enables the RB12 pin
+ */
+void pumpEnable(){
+    	LATBbits.LATB12 = 1;	// Set RB12 high
+    	delay_ms(1000);
+}
+
+/* Disables the RB12 pin
+ */
+void pumpDisable(){
+        LATBbits.LATB12 = 0;	// Set RB12 low
+}

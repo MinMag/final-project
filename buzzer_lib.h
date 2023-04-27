@@ -21,6 +21,14 @@ void buzzerEnable();
  */
 void buzzerDisable(volatile int* overflow);
 
+/* Enables the RB12 pin
+ */
+void pumpEnable();
+
+/* Disables the RB12 pin
+ */
+void pumpDisable();
+
 
 #ifdef	__cplusplus
 }

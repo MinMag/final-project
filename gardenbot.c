@@ -44,13 +44,6 @@ void initPushButton(void) {
 	IC1BUF = 0;
 	IEC0bits.IC1IE = 1; // Input capture 1 Interrupt Enable
 }
-void pumpEnable(){
-    	LATBbits.LATB12 = 1;	// Set RB12 high
-    	delay_ms(1000);
-}
-void pumpDisable(){
-        LATBbits.LATB12 = 0;	// Set RB12 low
-}
 void __attribute__((interrupt, auto_psv)) _T2Interrupt() { // rollover for T2 ISR
 	_T2IF = 0;
 	TMR2 = 0; 
@@ -97,24 +90,6 @@ int main() {
 	adc_init1();
 	T2CONbits.TON = 1;
     
-    // Turn on RB12 and RB6 in a startup rhythm
-//    LATBbits.LATB12 = 1;   // Turn on RB12
-//    delay_ms(100);         // Delay for 100 ms
-//    LATBbits.LATB6 = 1;    // Turn on RB6
-//    delay_ms(50);          // Delay for 50 ms
-//    LATBbits.LATB12 = 0;   // Turn off RB12
-//    delay_ms(50);          // Delay for 50 ms
-//    LATBbits.LATB6 = 0;    // Turn off RB6
-//    delay_ms(100);         // Delay for 100 ms
-//
-//    LATBbits.LATB6 = 1;    // Turn on RB6
-//    delay_ms(100);         // Delay for 100 ms
-//    LATBbits.LATB12 = 1;   // Turn on RB12
-//    delay_ms(50);          // Delay for 50 ms
-//    LATBbits.LATB6 = 0;    // Turn off RB6
-//    delay_ms(50);          // Delay for 50 ms
-//    LATBbits.LATB12 = 0;   // Turn off RB12
-
     loop();
     
 }
