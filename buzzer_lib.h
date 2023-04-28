@@ -16,14 +16,17 @@ extern "C" {
  */
 void buzzerEnable();
 
+
 /* When called, buzzer stays on for 10 seconds 
  * or until the water threshold increases
  */
 void buzzerDisable(volatile int* overflow);
 
+
 /* Enables the RB12 pin
  */
 void pumpEnable();
+
 
 /* Disables the RB12 pin
  */
