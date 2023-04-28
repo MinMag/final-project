@@ -74,7 +74,7 @@ void loop() {
                 //Water soil
             	pumpEnable(); 
                 pumpDisable();
-                //Sleeping 8, 1 WDT period is 4 seconds approx.
+                //Sleeping 8 seconds, 1 WDT period is 4 seconds approx.
                 sleepNperiods(2); 
         	}
         else {
