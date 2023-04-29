@@ -21,6 +21,9 @@
  
 #define MOISTURETHRESHOLD (1.95/3.3)*1023 //ADC2, Threshold of 1.8V
 #define WATERLEVELTHRESHOLD (1.65/3.3)*1023 //ADC1, Threshold of 1.65V
+#define PERIODSAFTERWATER 2
+#define PERIODSAFTERLOWWATER 2
+#define PERIODSAFTERNOTHING 2
 
 volatile int overflow = 0; //A variable to allow for early exit from
                            //buzzerDisable() function
@@ -67,7 +70,7 @@ void loop() {
             buzzerEnable();
             buzzerDisable(&overflow);
             //Sleeping 8 seconds before we continue
-            sleepNperiods(2); 
+            sleepNperiods(PERIODSAFTERLOWWATER); 
     	}
         //Moisture Voltage is High when Dry
     	else if(getAvgMoisture() > MOISTURETHRESHOLD){
@@ -75,13 +78,13 @@ void loop() {
             	pumpEnable(); 
                 pumpDisable();
                 //Sleeping 8 seconds, 1 WDT period is 4 seconds approx.
-                sleepNperiods(2); 
+                sleepNperiods(PERIODSAFTERWATER); 
         	}
         else {
             	//Nothing is needed to be done in this active period since
                 //the water level is high and the soil is moist
                 //Sleeping in sleep for approx. 8 seconds
-                sleepNperiods(2); 
+                sleepNperiods(PERIODSAFTERNOTHING); 
         	}
 	}
 }
