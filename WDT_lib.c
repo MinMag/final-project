@@ -16,7 +16,7 @@
  * Arguments: int N - the number of desired periods to sleep for
  * Returns: nothing
  */
-void sleepNperiods(int N) {
+void sleepNperiods(unsigned int N) {
     int t;
     for(t = 0; t < N; t++) {
         RCONbits.SWDTEN = 1;

@@ -15,7 +15,7 @@ extern "C" {
     
 
     
-    void sleepNperiods(int);
+    void sleepNperiods(unsigned int);
 
 
 
