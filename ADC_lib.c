@@ -118,8 +118,8 @@ void adc_init1(){
 	TMR3 = 0;  // Set up timer3
 	T3CON = 0;
 	T3CONbits.TCKPS = 0b10;// 1:64
-	PR3 = 15624/2;
-	T3CONbits.TON = 1; // 32 times per second
+	PR3 = 15624/4;
+	T3CONbits.TON = 1; // 64 times per second
 }
 
 /* For every sample time (Associated with timer3), a value is added to the corresponding 
