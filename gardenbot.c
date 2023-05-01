@@ -20,7 +20,7 @@
                                   // WDT period (ms) = (FWPSA/32) * WDTPS
  
 #define MOISTURETHRESHOLD (1.95/3.3)*1023 //ADC2, Threshold of 1.8V
-#define WATERLEVELTHRESHOLD (1.1/3.3)*1023 //ADC1, Threshold of 1.65V
+#define WATERLEVELTHRESHOLD (1.32/3.3)*1023 //ADC1, Threshold of 1.65V
 #define PERIODSAFTERWATER 2
 #define PERIODSAFTERLOWWATER 2
 #define PERIODSAFTERNOTHING 2
