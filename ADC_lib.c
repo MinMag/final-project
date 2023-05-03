@@ -38,7 +38,7 @@ void pic24_setup(void){
  * by decrementing and adding to a sum with a defined number of samples
  * all while checking for underflow
 */ 
-unsigned int getAvgWaterLevel(){
+unsigned int getAvgWaterLevel(void){
 	unsigned long sum = 0;
     	int index = buffer_index1;
     	for (int i = 0; i < NUMSAMPLES; i++) {
@@ -55,7 +55,7 @@ unsigned int getAvgWaterLevel(){
  * by decrementing and adding to a sum with a defined number of samples
  * all while checking for underflow
 */ 
-unsigned int getAvgMoisture(){
+unsigned int getAvgMoisture(void){
 	unsigned long sum = 0;
     	int index = buffer_index2;
     	for (int i = 0; i < NUMSAMPLES; i++) {
@@ -89,7 +89,7 @@ void putVal2(unsigned int ADCvalue){
 
 /* Initializes 2 ADC buffers at a defined size to base values
  */
-void initBuffer(){
+void initBuffer(void){
 	int i;
 	for(i=0; i < BUFSIZE; i++){
     	adc_buffer1[i] = INITWATERLEVEL;
