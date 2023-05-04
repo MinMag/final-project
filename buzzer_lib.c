@@ -7,7 +7,7 @@
 
 /* Enables the RB6 pin
  */
-void buzzerEnable(){
+void buzzerEnable(void){
     LATBbits.LATB6 = 1; //sets RB6 as high
 }
 
@@ -21,13 +21,13 @@ void buzzerDisable(volatile int* overflow){
 
 /* Enables the RB12 pin
  */
-void pumpEnable(){
+void pumpEnable(void){
     	LATBbits.LATB12 = 1;	// Set RB12 high
     	delay_ms(1000);
 }
 
 /* Disables the RB12 pin
  */
-void pumpDisable(){
+void pumpDisable(void){
         LATBbits.LATB12 = 0;	// Set RB12 low
 }

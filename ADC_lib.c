@@ -99,7 +99,7 @@ void initBuffer(void){
 /* Initializes ADC by assigning reference voltages, assigning timer3 and the sample time to the ADC,
  * and initializing AN0 as the ADC input
  */
-void adc_init1(){
+void adc_init1(void){
 	AD1CON2bits.VCFG = 0b000; // VDD max (3.3V) and VSS min (0V)
     
 	AD1CON3bits.ADCS = 1; // TAD >= 75 ns (Tcy = 62.5 ns)

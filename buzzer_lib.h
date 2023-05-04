@@ -14,7 +14,7 @@ extern "C" {
     
 /* When called, RB6 is enabled, causing the buzzer to go of
  */
-void buzzerEnable();
+void buzzerEnable(void);
 
 
 /* When called, buzzer stays on for 10 seconds 
@@ -25,12 +25,12 @@ void buzzerDisable(volatile int* overflow);
 
 /* Enables the RB12 pin
  */
-void pumpEnable();
+void pumpEnable(void);
 
 
 /* Disables the RB12 pin
  */
-void pumpDisable();
+void pumpDisable(void);
 
 
 #ifdef	__cplusplus

@@ -18,8 +18,8 @@ unsigned int getAvgMoisture(void);
 unsigned int getAvgWaterLevel(void);
 void putVal1(unsigned int ADCvalue);
 void putVal2(unsigned int ADCvalue);
-void initBuffer();
-void adc_init1();
+void initBuffer(void);
+void adc_init1(void);
 void __attribute__((interrupt, auto_psv)) _ADC1Interrupt(void);
 
 

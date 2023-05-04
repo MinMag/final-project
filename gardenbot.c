@@ -47,12 +47,12 @@ void initPushButton(void) {
 	IC1BUF = 0;
 	IEC0bits.IC1IE = 1; // Input capture 1 Interrupt Enable
 }
-void __attribute__((interrupt, auto_psv)) _T2Interrupt() { // rollover for T2 ISR
+void __attribute__((interrupt, auto_psv)) _T2Interrupt(void) { // rollover for T2 ISR
 	_T2IF = 0;
 	TMR2 = 0; 
     overflow +=1; //This variable is used in the buzzerDisable function
 }
-void __attribute__((interrupt, auto_psv)) _IC1Interrupt() { // Detect click ISR
+void __attribute__((interrupt, auto_psv)) _IC1Interrupt(void) { // Detect click ISR
 	_IC1IF = 0;
 	pumpEnable();
     pumpDisable();
@@ -88,7 +88,7 @@ void loop() {
         	}
 	}
 }
-int main() {
+int main(void) {
 	initBuffer();
 	pic24_setup();
 	initPushButton();
